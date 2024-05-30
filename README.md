@@ -4,7 +4,7 @@
 >
 > DE3   
 
-## Partie I
+## Partie I – Itérateur
 
 ## Implémentation 1 
 
@@ -134,4 +134,99 @@ classDiagram
 
 ### 2. Diagramme de classes
 
-> ![img](./impl3.png)
+```mermaid
+classDiagram
+    class Plat {
+        - _nom: str
+        - _description: str
+        - _vegetarien: bool
+        - _prix: float
+        + get_nom(): str
+        + get_description(): str
+        + get_vegetarien(): bool
+        + get_prix(): float
+        + set_nom(nom: str): None
+        + set_description(desc: str): None
+        + set_vegetarien(vege: bool): None
+        + set_prix(prix: float): None
+        + __str__(): str
+    }
+    
+    class Menu {
+        <<abstract>>
+        + ajouter_plat(nom: str, description: str, vegetarien: bool, prix: float): None
+        + get_plats(): List[Plat]
+        + creer_iterateur(): Iterator
+    }
+    
+    class MenuCafeteria {
+        - plats: Dict[str, Plat]
+        - nombrePlats: int
+        + ajouter_plat(nom: str, description: str, vegetarien: bool, prix: float): None
+        + get_plats(): Dict[str, Plat]
+        + creer_iterateur(): Iterator
+    }
+    
+    class MenuCreperie {
+        - plats: List[Plat]
+        + ajouter_plat(nom: str, description: str, vegetarien: bool, prix: float): None
+        + get_plats(): List[Plat]
+        + creer_iterateur(): Iterator
+    }
+    
+    class Serveuse {
+        - menu_creperie: MenuCreperie
+        - menu_cafeteria: MenuCafeteria
+        + afficher_menu(): None
+    }
+    
+    class TestServeuse {
+        - menu_creperie: MenuCreperie
+        - menu_cafeteria: MenuCafeteria
+        - serveuse: Serveuse
+        + tester_afficher_menu(): None
+        + ajouter_plat_creperie(nom: str, description: str, vegetarien: bool, prix: float): None
+        + ajouter_plat_cafeteria(nom: str, description: str, vegetarien: bool, prix: float): None
+    }
+    
+    class IterateurMenuCreperie {
+        + _plats: List[Plat]
+        + _index: int
+        + encore(): bool
+        + __next__(): Plat
+    }
+    
+    class IterateurMenuCafeteria {
+        + _plats: List[Plat]
+        + _index: int
+        + encore(): bool
+        + __next__(): Plat
+    }
+    
+    Plat <|-- Menu
+    Menu <|-- MenuCreperie
+    Menu <|-- MenuCafeteria
+    MenuCreperie *-- IterateurMenuCreperie
+    MenuCafeteria *-- IterateurMenuCafeteria
+    Serveuse *-- MenuCreperie
+    Serveuse *-- MenuCafeteria
+    Serveuse --|> TestServeuse
+```
+
+## Partie II - Travail en binôme (Fleisch, Bochu, Pellé)
+
+### Quels sont les points que vous avez réalisés différemment ? Pourquoi ?
+
+> - Répartition des class dans différents fichiers (1 fichier global ou 1 fichier par class).
+>
+> - Réalisation des diagrammes de classes avec différents outils (drawio ou mermaid)
+
+### Si vous deviez reprendre le travail réaliser maintenant comment aborderiez-vous le TD ?
+
+> - On partirait initialement sur une architecture et des implémentations mieux définient contrairement à ce que à fait dans la première implémentation.
+>
+> - On aurait préférer aborder dès la première implémentation la solution finale pour étudiée d'autre implémentations plus complexes.
+
+### Si vous deviez mettre une note pour la réalisation de votre binôme quelle serait-elle ? Pourquoi ?
+
+> - 14,5/20
